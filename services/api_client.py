@@ -4,8 +4,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
-API_TIMEOUT = int(os.getenv("API_TIMEOUT", "120"))
+
+def _get_config(key: str, default: str) -> str:
+    """Lê config do st.secrets (Streamlit Cloud) ou .env (local)."""
+    try:
+        import streamlit as st
+        return st.secrets.get(key, os.getenv(key, default))
+    except Exception:
+        return os.getenv(key, default)
+
+
+API_BASE_URL = _get_config("API_BASE_URL", "http://localhost:8000")
+API_TIMEOUT = int(_get_config("API_TIMEOUT", "120"))
 
 
 class APIError(Exception):
