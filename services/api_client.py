@@ -14,7 +14,7 @@ def _get_config(key: str, default: str) -> str:
         return os.getenv(key, default)
 
 
-API_BASE_URL = _get_config("API_BASE_URL", "http://localhost:8000", "https://api-analise-curriculo-com-ia.onrender.com")
+API_BASE_URL = _get_config("API_BASE_URL", "https://api-analise-curriculo-com-ia.onrender.com")
 API_TIMEOUT = int(_get_config("API_TIMEOUT", "120"))
 
 
