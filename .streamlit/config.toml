@@ -3,3 +3,7 @@ gatherUsageStats = false
 
 [theme]
 base = "dark"
+
+[client]
+showSidebarNavigation = false
+toolbarMode = "minimal"

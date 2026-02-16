@@ -59,6 +59,13 @@ st.markdown(
     .subtitle    { text-align: center; color: #888; margin-top: 0; }
     .stDownloadButton > button { width: 100%; }
 
+    /* Esconder elementos do Streamlit Cloud */
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    [data-testid="stToolbar"] {display: none;}
+    .stDeployButton {display: none;}
+
     /* Score card */
     .score-card {
         text-align: center;
