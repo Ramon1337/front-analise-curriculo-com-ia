@@ -1,0 +1,24 @@
+.footer {
+  margin-top: 2rem;
+}
+
+.footer__divider {
+  height: 1px;
+  background: #30395a;
+  margin-bottom: 1rem;
+}
+
+.footer__text {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.footer__text a {
+  color: #5b6eae;
+  text-decoration: none;
+}
+
+.footer__text a:hover {
+  text-decoration: underline;
+}

@@ -1,6 +1,6 @@
 # 📄 Currículo AI — Frontend
 
-Frontend em **Streamlit** para análise inteligente e ajuste de currículos com IA.  
+Frontend em **React + TypeScript** (Vite) para análise inteligente e ajuste de currículos com IA.  
 Envia o currículo para uma API backend, exibe o resultado da análise (score, pontos fortes/fracos, sugestões) e permite download do currículo ajustado em PDF.
 
 ---
@@ -9,7 +9,7 @@ Envia o currículo para uma API backend, exibe o resultado da análise (score, p
 
 | Funcionalidade          | Descrição                                                           |
 | ----------------------- | ------------------------------------------------------------------- |
-| **Upload de currículo** | Aceita arquivos PDF e TXT                                           |
+| **Upload de currículo** | Aceita arquivos PDF e TXT (drag-and-drop ou click)                  |
 | **Apenas análise**      | Retorna score, análise detalhada e sugestões de melhoria            |
 | **Analisar e ajustar**  | Retorna um PDF com o currículo reescrito pela IA                    |
 | **Score visual**        | Card colorido (verde/amarelo/vermelho) com barra de progresso       |
@@ -21,10 +21,9 @@ Envia o currículo para uma API backend, exibe o resultado da análise (score, p
 
 ## 🛠️ Tecnologias
 
-- [Python 3.12+](https://www.python.org/)
-- [Streamlit](https://streamlit.io/) — Interface web
-- [Requests](https://docs.python-requests.org/) — Cliente HTTP
-- [python-dotenv](https://github.com/theskumar/python-dotenv) — Variáveis de ambiente
+- [React 19](https://react.dev/) — Interface de usuário
+- [TypeScript](https://www.typescriptlang.org/) — Tipagem estática
+- [Vite](https://vitejs.dev/) — Build tool ultra-rápido
 
 ---
 
@@ -32,13 +31,25 @@ Envia o currículo para uma API backend, exibe o resultado da análise (score, p
 
 ```
 frontend-curriculo/
-├── .env                   # Variáveis de ambiente (URL da API, timeout)
-├── .streamlit/
-│   └── config.toml        # Configurações do Streamlit (tema)
-├── main.py                # Aplicação principal (UI Streamlit)
-├── services/
-│   └── api_client.py      # Cliente HTTP para comunicação com o backend
-├── requirements.txt       # Dependências Python
+├── .env                        # Variáveis de ambiente (URL da API, timeout)
+├── index.html                  # Entry HTML
+├── package.json                # Dependências e scripts
+├── vite.config.ts              # Configuração Vite
+├── tsconfig.json               # Configuração TypeScript
+├── src/
+│   ├── main.tsx                # Entry point React
+│   ├── App.tsx                 # Componente principal
+│   ├── App.css                 # Estilos do App
+│   ├── index.css               # Estilos globais (tema escuro)
+│   ├── components/
+│   │   ├── Header.tsx          # Cabeçalho
+│   │   ├── FileUpload.tsx      # Upload de arquivo (drag & drop)
+│   │   ├── ModeSelector.tsx    # Seletor de modo (análise / ajuste)
+│   │   ├── ScoreCard.tsx       # Card de pontuação visual
+│   │   ├── ResultTabs.tsx      # Abas de resultado
+│   │   └── Footer.tsx          # Rodapé
+│   └── services/
+│       └── apiClient.ts        # Cliente HTTP para o backend
 └── README.md
 ```
 
@@ -56,7 +67,7 @@ cd front-analise-curriculo-com-ia
 ### 2. Instale as dependências
 
 ```bash
-pip install -r requirements.txt
+npm install
 ```
 
 ### 3. Configure o ambiente
@@ -64,22 +75,30 @@ pip install -r requirements.txt
 Edite o arquivo `.env` na raiz do projeto:
 
 ```env
-API_BASE_URL=http://localhost:8000
-API_TIMEOUT=120
+VITE_API_BASE_URL=http://localhost:8000
+VITE_API_TIMEOUT=120000
 ```
 
-| Variável       | Descrição                         | Padrão                  |
-| -------------- | --------------------------------- | ----------------------- |
-| `API_BASE_URL` | URL do backend da API             | `http://localhost:8000` |
-| `API_TIMEOUT`  | Timeout da requisição em segundos | `120`                   |
+| Variável             | Descrição                            | Padrão                  |
+| -------------------- | ------------------------------------ | ----------------------- |
+| `VITE_API_BASE_URL`  | URL do backend da API                | `http://localhost:8000` |
+| `VITE_API_TIMEOUT`   | Timeout da requisição em milissegundos | `120000`               |
 
 ### 4. Execute
 
 ```bash
-python -m streamlit run main.py
+npm run dev
 ```
 
-A aplicação estará disponível em **http://localhost:8501**.
+A aplicação estará disponível em **http://localhost:3000**.
+
+### 5. Build para produção
+
+```bash
+npm run build
+```
+
+Os arquivos serão gerados em `dist/`.
 
 ---
 
@@ -88,7 +107,7 @@ A aplicação estará disponível em **http://localhost:8501**.
 O frontend se comunica com o backend via:
 
 ```
-POST {API_BASE_URL}/resume/analyze
+POST {VITE_API_BASE_URL}/resume/analyze
 Content-Type: multipart/form-data
 ```
 

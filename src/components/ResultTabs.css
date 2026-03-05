@@ -1,0 +1,54 @@
+.result-tabs {
+  margin-bottom: 1.5rem;
+}
+
+.result-tabs__header {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.result-tabs__tab {
+  flex: 1;
+  padding: 10px 20px;
+  border: 1px solid #30395a;
+  border-radius: 8px;
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.result-tabs__tab:hover {
+  border-color: #5b6eae;
+}
+
+.result-tabs__tab--active {
+  background: rgba(91, 110, 174, 0.15);
+  border-color: #5b6eae;
+  color: #e6edf3;
+}
+
+.result-tabs__content {
+  background: #161b22;
+  border: 1px solid #30395a;
+  border-radius: 10px;
+  padding: 1.25rem;
+  min-height: 120px;
+  white-space: pre-wrap;
+  line-height: 1.7;
+  color: #c9d1d9;
+}
+
+.result-tabs__text {
+  white-space: pre-wrap;
+}
+
+.result-tabs__empty {
+  color: #666;
+  font-style: italic;
+}

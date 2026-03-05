@@ -1,0 +1,42 @@
+import './ModeSelector.css';
+
+export type Mode = 'analysis' | 'adjust';
+
+interface Props {
+  mode: Mode;
+  onModeChange: (mode: Mode) => void;
+}
+
+export default function ModeSelector({ mode, onModeChange }: Props) {
+  return (
+    <div className="mode-selector">
+      <h3 className="mode-selector__title">Modo de processamento</h3>
+      <div className="mode-selector__options">
+        <label
+          className={`mode-option ${mode === 'analysis' ? 'mode-option--active' : ''}`}
+        >
+          <input
+            type="radio"
+            name="mode"
+            value="analysis"
+            checked={mode === 'analysis'}
+            onChange={() => onModeChange('analysis')}
+          />
+          <span>🔍 Apenas análise</span>
+        </label>
+        <label
+          className={`mode-option ${mode === 'adjust' ? 'mode-option--active' : ''}`}
+        >
+          <input
+            type="radio"
+            name="mode"
+            value="adjust"
+            checked={mode === 'adjust'}
+            onChange={() => onModeChange('adjust')}
+          />
+          <span>✏️ Analisar e ajustar</span>
+        </label>
+      </div>
+    </div>
+  );
+}

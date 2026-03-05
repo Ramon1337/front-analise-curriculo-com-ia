@@ -1,0 +1,46 @@
+.mode-selector {
+  margin-bottom: 1.5rem;
+}
+
+.mode-selector__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  color: #c9d1d9;
+}
+
+.mode-selector__options {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.mode-option {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #30395a;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  color: #aaa;
+}
+
+.mode-option input {
+  display: none;
+}
+
+.mode-option:hover {
+  border-color: #5b6eae;
+}
+
+.mode-option--active {
+  border-color: #5b6eae;
+  background: rgba(91, 110, 174, 0.12);
+  color: #e6edf3;
+}
+
+.mode-option span {
+  font-size: 0.95rem;
+}

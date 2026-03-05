@@ -1,0 +1,97 @@
+/* ── Global dark theme ─────────────────────────────────────────────── */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.app__container {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* ── Process button ───────────────────────────────────────────────── */
+
+.btn-process {
+  width: 100%;
+  padding: 0.85rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #5b6eae, #7c3aed);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-bottom: 1.5rem;
+}
+
+.btn-process:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.btn-process:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Download button ──────────────────────────────────────────────── */
+
+.btn-download {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #30395a;
+  border-radius: 10px;
+  background: transparent;
+  color: #c9d1d9;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.btn-download:hover {
+  background: rgba(91, 110, 174, 0.1);
+  border-color: #5b6eae;
+}
+
+/* ── Alerts ───────────────────────────────────────────────────────── */
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.alert--error {
+  background: rgba(255, 107, 107, 0.12);
+  border: 1px solid #ff6b6b;
+  color: #ff6b6b;
+}
+
+.alert--success {
+  background: rgba(107, 203, 119, 0.12);
+  border: 1px solid #6bcb77;
+  color: #6bcb77;
+}
+
+/* ── Results ──────────────────────────────────────────────────────── */
+
+.results {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
