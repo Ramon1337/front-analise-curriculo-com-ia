@@ -60,11 +60,8 @@ function unwrap(raw: unknown): Record<string, unknown> {
 }
 
 function normalizeResult(raw: unknown): AnalysisResult {
-  console.log('[Currículo AI] Resposta bruta da API:', JSON.stringify(raw, null, 2));
 
   const data = unwrap(raw);
-
-  console.log('[Currículo AI] Dados extraídos:', JSON.stringify(data, null, 2));
 
   return {
     score: data.score != null ? Number(data.score) : null,
