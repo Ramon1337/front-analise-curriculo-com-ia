@@ -9,14 +9,13 @@ export class APIError extends Error {
 }
 
 export interface AnalysisResult {
-  score?: number;
-  justificativa_score?: string;
-  nivel_classificado?: string;
-  pontos_fortes?: string[];
-  pontos_fracos?: string[];
-  sugestoes_praticas?: string[];
-  avaliacao_geral?: string;
-  rewritten_resume?: string;
+  score: number | null;
+  justificativa_score: string;
+  nivel_classificado: string;
+  pontos_fortes: string[];
+  pontos_fracos: string[];
+  sugestoes_praticas: string[];
+  avaliacao_geral: string;
 }
 
 function toStringArray(value: unknown): string[] {
@@ -32,16 +31,14 @@ function toStringArray(value: unknown): string[] {
 }
 
 function normalizeResult(raw: Record<string, unknown>): AnalysisResult {
-  console.log('[API Response]', JSON.stringify(raw, null, 2));
   return {
-    score: raw.score != null ? Number(raw.score) : undefined,
+    score: raw.score != null ? Number(raw.score) : null,
     justificativa_score: String(raw.justificativa_score ?? ''),
     nivel_classificado: String(raw.nivel_classificado ?? ''),
     pontos_fortes: toStringArray(raw.pontos_fortes),
     pontos_fracos: toStringArray(raw.pontos_fracos),
     sugestoes_praticas: toStringArray(raw.sugestoes_praticas),
     avaliacao_geral: String(raw.avaliacao_geral ?? ''),
-    rewritten_resume: String(raw.rewritten_resume ?? ''),
   };
 }
 

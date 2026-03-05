@@ -22,15 +22,15 @@ function buildDownloadText(r: AnalysisResult): string {
   if (r.nivel_classificado) parts.push(`NÍVEL: ${r.nivel_classificado}`);
   if (r.justificativa_score)
     parts.push(`JUSTIFICATIVA\n${sep}\n${r.justificativa_score}`);
-  if (r.pontos_fortes?.length)
+  if (r.pontos_fortes.length)
     parts.push(
       `PONTOS FORTES\n${sep}\n${r.pontos_fortes.map((p, i) => `${i + 1}. ${p}`).join('\n')}`,
     );
-  if (r.pontos_fracos?.length)
+  if (r.pontos_fracos.length)
     parts.push(
       `PONTOS FRACOS\n${sep}\n${r.pontos_fracos.map((p, i) => `${i + 1}. ${p}`).join('\n')}`,
     );
-  if (r.sugestoes_praticas?.length)
+  if (r.sugestoes_praticas.length)
     parts.push(
       `SUGESTÕES PRÁTICAS\n${sep}\n${r.sugestoes_praticas.map((s, i) => `${i + 1}. ${s}`).join('\n')}`,
     );
@@ -117,20 +117,11 @@ export default function App() {
             )}
 
             <ResultTabs
-              pontosFortes={analysisResult.pontos_fortes ?? []}
-              pontosFracos={analysisResult.pontos_fracos ?? []}
-              sugestoesPraticas={analysisResult.sugestoes_praticas ?? []}
-              avaliacaoGeral={analysisResult.avaliacao_geral ?? ''}
+              pontosFortes={analysisResult.pontos_fortes}
+              pontosFracos={analysisResult.pontos_fracos}
+              sugestoesPraticas={analysisResult.sugestoes_praticas}
+              avaliacaoGeral={analysisResult.avaliacao_geral}
             />
-
-            {analysisResult.rewritten_resume && (
-              <div className="rewritten-section">
-                <h3>📝 Currículo Reescrito</h3>
-                <div className="rewritten-section__content">
-                  {analysisResult.rewritten_resume}
-                </div>
-              </div>
-            )}
 
             <button
               type="button"
