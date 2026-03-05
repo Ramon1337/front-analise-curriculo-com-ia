@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import FileUpload from './components/FileUpload';
 import ModeSelector, { type Mode } from './components/ModeSelector';
-import ScoreCard from './components/ScoreCard';
-import ResultTabs from './components/ResultTabs';
 import Footer from './components/Footer';
+import LoadingSteps from './components/LoadingSteps';
 import {
   sendResume,
   APIError,
   type AnalysisResult,
 } from './services/apiClient';
 import './App.css';
+
+const ScoreCard = lazy(() => import('./components/ScoreCard'));
+const ResultTabs = lazy(() => import('./components/ResultTabs'));
 
 /* ── Helpers ──────────────────────────────────────────────────────── */
 
@@ -102,26 +104,30 @@ export default function App() {
           {loading ? '⏳ Processando…' : '🚀 Processar'}
         </button>
 
+        {loading && <LoadingSteps />}
+
         {error && <div className="alert alert--error">⚠️ {error}</div>}
 
         {analysisResult && (
           <div className="results">
             <div className="alert alert--success">✅ Análise concluída!</div>
 
-            {analysisResult.score != null && (
-              <ScoreCard
-                score={Number(analysisResult.score)}
-                nivel={analysisResult.nivel_classificado}
-                justificativa={analysisResult.justificativa_score}
-              />
-            )}
+            <Suspense fallback={null}>
+              {analysisResult.score != null && (
+                <ScoreCard
+                  score={Number(analysisResult.score)}
+                  nivel={analysisResult.nivel_classificado}
+                  justificativa={analysisResult.justificativa_score}
+                />
+              )}
 
-            <ResultTabs
-              pontosFortes={analysisResult.pontos_fortes}
-              pontosFracos={analysisResult.pontos_fracos}
-              sugestoesPraticas={analysisResult.sugestoes_praticas}
-              avaliacaoGeral={analysisResult.avaliacao_geral}
-            />
+              <ResultTabs
+                pontosFortes={analysisResult.pontos_fortes}
+                pontosFracos={analysisResult.pontos_fracos}
+                sugestoesPraticas={analysisResult.sugestoes_praticas}
+                avaliacaoGeral={analysisResult.avaliacao_geral}
+              />
+            </Suspense>
 
             <button
               type="button"

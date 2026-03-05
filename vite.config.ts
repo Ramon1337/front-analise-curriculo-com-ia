@@ -7,4 +7,15 @@ export default defineConfig({
     port: 3000,
     open: true,
   },
+  build: {
+    target: 'es2020',
+    cssMinify: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+        },
+      },
+    },
+  },
 })
