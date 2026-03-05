@@ -30,15 +30,50 @@ function toStringArray(value: unknown): string[] {
   return [];
 }
 
-function normalizeResult(raw: Record<string, unknown>): AnalysisResult {
+function unwrap(raw: unknown): Record<string, unknown> {
+  // Se vier como array, pega o primeiro elemento (padrão n8n)
+  if (Array.isArray(raw)) return unwrap(raw[0]);
+
+  if (raw && typeof raw === 'object') {
+    const obj = raw as Record<string, unknown>;
+
+    // Se tiver campo "output" stringificado, tenta desempacotar
+    if (typeof obj.output === 'string') {
+      try {
+        const parsed = JSON.parse(obj.output);
+        if (parsed && typeof parsed === 'object') return unwrap(parsed);
+      } catch { /* não é JSON */ }
+    }
+
+    // Verifica wrappers comuns do n8n
+    for (const key of ['data', 'result', 'output', 'body', 'response']) {
+      const nested = obj[key];
+      if (nested && typeof nested === 'object' && !Array.isArray(nested) && 'score' in (nested as Record<string, unknown>)) {
+        return nested as Record<string, unknown>;
+      }
+    }
+
+    return obj;
+  }
+
+  return {};
+}
+
+function normalizeResult(raw: unknown): AnalysisResult {
+  console.log('[Currículo AI] Resposta bruta da API:', JSON.stringify(raw, null, 2));
+
+  const data = unwrap(raw);
+
+  console.log('[Currículo AI] Dados extraídos:', JSON.stringify(data, null, 2));
+
   return {
-    score: raw.score != null ? Number(raw.score) : null,
-    justificativa_score: String(raw.justificativa_score ?? ''),
-    nivel_classificado: String(raw.nivel_classificado ?? ''),
-    pontos_fortes: toStringArray(raw.pontos_fortes),
-    pontos_fracos: toStringArray(raw.pontos_fracos),
-    sugestoes_praticas: toStringArray(raw.sugestoes_praticas),
-    avaliacao_geral: String(raw.avaliacao_geral ?? ''),
+    score: data.score != null ? Number(data.score) : null,
+    justificativa_score: String(data.justificativa_score ?? ''),
+    nivel_classificado: String(data.nivel_classificado ?? ''),
+    pontos_fortes: toStringArray(data.pontos_fortes),
+    pontos_fracos: toStringArray(data.pontos_fracos),
+    sugestoes_praticas: toStringArray(data.sugestoes_praticas),
+    avaliacao_geral: String(data.avaliacao_geral ?? ''),
   };
 }
 
