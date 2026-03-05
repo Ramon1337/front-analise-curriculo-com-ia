@@ -2,9 +2,11 @@ import './ScoreCard.css';
 
 interface Props {
   score: number;
+  nivel?: string;
+  justificativa?: string;
 }
 
-export default function ScoreCard({ score }: Props) {
+export default function ScoreCard({ score, nivel, justificativa }: Props) {
   let colorClass: string;
   let barClass: string;
 
@@ -34,6 +36,17 @@ export default function ScoreCard({ score }: Props) {
           style={{ width: `${pct}%` }}
         />
       </div>
+      {nivel && (
+        <div className="score-card__nivel">
+          <span className="score-card__nivel-label">Nível: </span>
+          <span className={`score-card__nivel-value ${colorClass}`}>
+            {nivel}
+          </span>
+        </div>
+      )}
+      {justificativa && (
+        <p className="score-card__justificativa">{justificativa}</p>
+      )}
     </div>
   );
 }

@@ -10,8 +10,13 @@ export class APIError extends Error {
 
 export interface AnalysisResult {
   score?: number;
-  analysis?: string;
-  suggestions?: string | string[];
+  justificativa_score?: string;
+  nivel_classificado?: string;
+  pontos_fortes?: string[];
+  pontos_fracos?: string[];
+  sugestoes_praticas?: string[];
+  avaliacao_geral?: string;
+  rewritten_resume?: string;
 }
 
 const API_BASE_URL =

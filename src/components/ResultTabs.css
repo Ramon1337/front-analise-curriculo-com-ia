@@ -4,19 +4,21 @@
 
 .result-tabs__header {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
 .result-tabs__tab {
   flex: 1;
-  padding: 10px 20px;
+  padding: 10px 12px;
   border: 1px solid #30395a;
   border-radius: 8px;
   background: transparent;
   color: #aaa;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
   transition:
     background 0.2s,
     color 0.2s,
@@ -39,13 +41,28 @@
   border-radius: 10px;
   padding: 1.25rem;
   min-height: 120px;
-  white-space: pre-wrap;
   line-height: 1.7;
   color: #c9d1d9;
 }
 
 .result-tabs__text {
   white-space: pre-wrap;
+}
+
+.result-tabs__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.result-tabs__list li {
+  padding: 0.6rem 0.85rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid #5b6eae;
+  border-radius: 4px;
 }
 
 .result-tabs__empty {

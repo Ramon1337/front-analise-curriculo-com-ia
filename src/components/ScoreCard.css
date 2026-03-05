@@ -60,3 +60,27 @@
 .bar--low {
   background: #ff6b6b;
 }
+
+.score-card__nivel {
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.score-card__nivel-label {
+  color: #888;
+}
+
+.score-card__nivel-value {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.score-card__justificativa {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: #aaa;
+  line-height: 1.5;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}

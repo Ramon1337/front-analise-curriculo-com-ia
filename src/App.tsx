@@ -14,65 +14,30 @@ import './App.css';
 
 /* ── Helpers ──────────────────────────────────────────────────────── */
 
-function splitAnalysisSuggestions(text: string): [string, string] {
-  const patterns = [
-    /(?:^|\n)\s*\d+[.)]\s*[Ss]ugest[õo]es/,
-    /(?:^|\n)\s*#+\s*[Ss]ugest[õo]es/,
-    /(?:^|\n)\s*\*{0,2}[Ss]ugest[õo]es\s*de\s+/,
-    /(?:^|\n)\s*\*{0,2}[Ss]ugest[õo]es\*{0,2}\s*:?/,
-    /(?:^|\n)\s*\d+[.)]\s*[Mm]elhorias/,
-    /(?:^|\n)\s*#+\s*[Mm]elhorias/,
-    /(?:^|\n)\s*\*{0,2}[Rr]ecomenda[çc][õo]es\*{0,2}/,
-    /(?:^|\n)\s*\d+[.)]\s*[Rr]ecomenda[çc][õo]es/,
-    /(?:^|\n)\s*\*{0,2}[Oo]\s+que\s+melhorar\*{0,2}/,
-    /(?:^|\n)\s*\*{0,2}[Pp]ontos\s+a\s+melhorar\*{0,2}/,
-  ];
-
-  let bestPos = text.length;
-  for (const p of patterns) {
-    const m = p.exec(text);
-    if (m && m.index < bestPos) bestPos = m.index;
-  }
-
-  if (bestPos < text.length) {
-    return [text.slice(0, bestPos).trim(), text.slice(bestPos).trim()];
-  }
-
-  // Fallback: dividir pela metade das seções numeradas
-  const sections = [...text.matchAll(/(?:^|\n)\s*\d+[.)]/g)];
-  if (sections.length >= 2) {
-    const mid = Math.floor(sections.length / 2);
-    const splitPos = sections[mid].index!;
-    return [text.slice(0, splitPos).trim(), text.slice(splitPos).trim()];
-  }
-
-  return [text, ''];
-}
-
-function normalizeSuggestions(raw: string | string[] | undefined): string {
-  if (!raw) return '';
-  if (Array.isArray(raw)) return raw.join('\n');
-  try {
-    const parsed: unknown = JSON.parse(raw);
-    if (Array.isArray(parsed)) return (parsed as string[]).join('\n');
-  } catch {
-    /* não é JSON */
-  }
-  return raw;
-}
-
-function buildDownloadText(result: AnalysisResult): string {
+function buildDownloadText(r: AnalysisResult): string {
+  const sep = '─'.repeat(40);
   const parts: string[] = [];
-  if (result.score != null) parts.push(`SCORE: ${result.score}/10\n`);
-  if (result.analysis)
-    parts.push(`ANÁLISE\n${'─'.repeat(40)}\n${result.analysis}\n`);
-  if (result.suggestions) {
-    const sug = Array.isArray(result.suggestions)
-      ? result.suggestions.map((s, i) => `${i + 1}. ${s}`).join('\n')
-      : String(result.suggestions);
-    parts.push(`SUGESTÕES\n${'─'.repeat(40)}\n${sug}\n`);
-  }
-  return parts.join('\n');
+
+  if (r.score != null) parts.push(`SCORE: ${r.score}/10`);
+  if (r.nivel_classificado) parts.push(`NÍVEL: ${r.nivel_classificado}`);
+  if (r.justificativa_score)
+    parts.push(`JUSTIFICATIVA\n${sep}\n${r.justificativa_score}`);
+  if (r.pontos_fortes?.length)
+    parts.push(
+      `PONTOS FORTES\n${sep}\n${r.pontos_fortes.map((p, i) => `${i + 1}. ${p}`).join('\n')}`,
+    );
+  if (r.pontos_fracos?.length)
+    parts.push(
+      `PONTOS FRACOS\n${sep}\n${r.pontos_fracos.map((p, i) => `${i + 1}. ${p}`).join('\n')}`,
+    );
+  if (r.sugestoes_praticas?.length)
+    parts.push(
+      `SUGESTÕES PRÁTICAS\n${sep}\n${r.sugestoes_praticas.map((s, i) => `${i + 1}. ${s}`).join('\n')}`,
+    );
+  if (r.avaliacao_geral)
+    parts.push(`AVALIAÇÃO GERAL\n${sep}\n${r.avaliacao_geral}`);
+
+  return parts.join('\n\n');
 }
 
 /* ── App ──────────────────────────────────────────────────────────── */
@@ -112,22 +77,6 @@ export default function App() {
     }
   }
 
-  // Processar análise / sugestões
-  let analysisText = '';
-  let suggestionsText = '';
-  if (analysisResult) {
-    const rawAnalysis = analysisResult.analysis ?? '';
-    const rawSuggestions = normalizeSuggestions(analysisResult.suggestions);
-    const contentIsSame = rawAnalysis.trim() === rawSuggestions.trim();
-
-    if (contentIsSame && rawAnalysis) {
-      [analysisText, suggestionsText] = splitAnalysisSuggestions(rawAnalysis);
-    } else {
-      analysisText = rawAnalysis;
-      suggestionsText = rawSuggestions;
-    }
-  }
-
   function downloadFile(blob: Blob, filename: string) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -160,10 +109,28 @@ export default function App() {
             <div className="alert alert--success">✅ Análise concluída!</div>
 
             {analysisResult.score != null && (
-              <ScoreCard score={Number(analysisResult.score)} />
+              <ScoreCard
+                score={Number(analysisResult.score)}
+                nivel={analysisResult.nivel_classificado}
+                justificativa={analysisResult.justificativa_score}
+              />
             )}
 
-            <ResultTabs analysis={analysisText} suggestions={suggestionsText} />
+            <ResultTabs
+              pontosFortes={analysisResult.pontos_fortes ?? []}
+              pontosFracos={analysisResult.pontos_fracos ?? []}
+              sugestoesPraticas={analysisResult.sugestoes_praticas ?? []}
+              avaliacaoGeral={analysisResult.avaliacao_geral ?? ''}
+            />
+
+            {analysisResult.rewritten_resume && (
+              <div className="rewritten-section">
+                <h3>📝 Currículo Reescrito</h3>
+                <div className="rewritten-section__content">
+                  {analysisResult.rewritten_resume}
+                </div>
+              </div>
+            )}
 
             <button
               type="button"
