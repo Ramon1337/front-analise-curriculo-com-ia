@@ -19,6 +19,32 @@ export interface AnalysisResult {
   rewritten_resume?: string;
 }
 
+function toStringArray(value: unknown): string[] {
+  if (Array.isArray(value)) return value.map(String);
+  if (typeof value === 'string') {
+    try {
+      const parsed: unknown = JSON.parse(value);
+      if (Array.isArray(parsed)) return parsed.map(String);
+    } catch { /* não é JSON */ }
+    return value.trim() ? [value] : [];
+  }
+  return [];
+}
+
+function normalizeResult(raw: Record<string, unknown>): AnalysisResult {
+  console.log('[API Response]', JSON.stringify(raw, null, 2));
+  return {
+    score: raw.score != null ? Number(raw.score) : undefined,
+    justificativa_score: String(raw.justificativa_score ?? ''),
+    nivel_classificado: String(raw.nivel_classificado ?? ''),
+    pontos_fortes: toStringArray(raw.pontos_fortes),
+    pontos_fracos: toStringArray(raw.pontos_fracos),
+    sugestoes_praticas: toStringArray(raw.sugestoes_praticas),
+    avaliacao_geral: String(raw.avaliacao_geral ?? ''),
+    rewritten_resume: String(raw.rewritten_resume ?? ''),
+  };
+}
+
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ??
   'https://api-analise-curriculo-com-ia.onrender.com';
@@ -75,7 +101,7 @@ export async function sendResume(
   const contentType = response.headers.get('Content-Type') ?? '';
 
   if (contentType.includes('application/json')) {
-    return (await response.json()) as AnalysisResult;
+    return normalizeResult(await response.json());
   }
 
   if (contentType.includes('application/pdf')) {
@@ -84,7 +110,7 @@ export async function sendResume(
 
   // Fallback: tenta JSON, senão devolve blob
   try {
-    return (await response.clone().json()) as AnalysisResult;
+    return normalizeResult(await response.clone().json());
   } catch {
     return await response.blob();
   }
