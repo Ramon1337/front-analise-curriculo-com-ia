@@ -6,9 +6,13 @@ interface Props {
   onFileChange: (file: File | null) => void;
 }
 
-const ACCEPTED_TYPES = ['application/pdf', 'text/plain'];
+const ACCEPTED_TYPES = [
+  'application/pdf',
+  'text/plain',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+];
 
-const ACCEPTED_EXTENSIONS = ['.pdf', '.txt'];
+const ACCEPTED_EXTENSIONS = ['.pdf', '.txt', '.docx'];
 
 function isValidFile(file: File): boolean {
   if (ACCEPTED_TYPES.includes(file.type)) return true;
@@ -25,7 +29,7 @@ export default function FileUpload({ file, onFileChange }: Props) {
     if (!files || files.length === 0) return;
     const selected = files[0];
     if (!isValidFile(selected)) {
-      alert('Formato não aceito. Envie um arquivo PDF ou TXT.');
+      alert('Formato não aceito. Envie um arquivo PDF, DOCX ou TXT.');
       return;
     }
     onFileChange(selected);
@@ -53,7 +57,7 @@ export default function FileUpload({ file, onFileChange }: Props) {
       <input
         ref={inputRef}
         type="file"
-        accept=".pdf,.txt"
+        accept=".pdf,.txt,.docx"
         className="file-upload__input"
         onChange={(e) => handleFiles(e.target.files)}
       />
@@ -78,7 +82,7 @@ export default function FileUpload({ file, onFileChange }: Props) {
         <div className="file-upload__placeholder">
           <span className="file-upload__icon">📁</span>
           <p>Arraste seu currículo aqui ou clique para selecionar</p>
-          <small>Formatos aceitos: PDF, TXT</small>
+          <small>Formatos aceitos: PDF, DOCX, TXT</small>
         </div>
       )}
     </div>
