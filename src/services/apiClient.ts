@@ -78,7 +78,7 @@ const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ??
   'https://api-analise-curriculo-com-ia.onrender.com';
 
-const API_TIMEOUT = Number(import.meta.env.VITE_API_TIMEOUT ?? 120_000);
+const API_TIMEOUT = Number(import.meta.env.VITE_API_TIMEOUT ?? 300_000);
 
 export async function sendResume(
   file: File,
