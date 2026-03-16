@@ -79,6 +79,12 @@
   color: #6bcb77;
 }
 
+.alert--warning {
+  background: rgba(255, 214, 102, 0.12);
+  border: 1px solid #ffd666;
+  color: #ffd666;
+}
+
 /* ── Results ──────────────────────────────────────────────────────── */
 
 .results {

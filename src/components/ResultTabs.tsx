@@ -30,7 +30,7 @@ export default function ResultTabs({
     return (
       <ul className="result-tabs__list">
         {items.map((item, i) => (
-          <li key={i}>{item}</li>
+          <li key={`${item}-${i}`}>{item}</li>
         ))}
       </ul>
     );

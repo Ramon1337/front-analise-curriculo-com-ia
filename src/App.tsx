@@ -54,8 +54,10 @@ export default function App() {
   );
   const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
 
+  const isDocxSelected = !!file && file.name.toLowerCase().endsWith('.docx');
+
   async function handleProcess() {
-    if (!file) return;
+    if (!file || isDocxSelected) return;
     setError(null);
     setAnalysisResult(null);
     setPdfBlob(null);
@@ -88,21 +90,34 @@ export default function App() {
     URL.revokeObjectURL(url);
   }
 
+  function handleModeChange(nextMode: Mode) {
+    setMode(nextMode);
+    setError(null);
+    setAnalysisResult(null);
+    setPdfBlob(null);
+  }
+
   return (
     <div className="app">
       <div className="app__container">
         <Header />
         <FileUpload file={file} onFileChange={setFile} />
-        <ModeSelector mode={mode} onModeChange={setMode} />
+        <ModeSelector mode={mode} onModeChange={handleModeChange} />
 
         <button
           type="button"
           className="btn-process"
-          disabled={!file || loading}
+          disabled={!file || loading || isDocxSelected}
           onClick={handleProcess}
         >
           {loading ? '⏳ Processando…' : '🚀 Processar'}
         </button>
+
+        {isDocxSelected && (
+          <div className="alert alert--warning">
+            Formato DOCX está temporariamente desabilitado. Use PDF ou TXT.
+          </div>
+        )}
 
         {loading && <LoadingSteps />}
 
@@ -115,7 +130,7 @@ export default function App() {
             <Suspense fallback={null}>
               {analysisResult.score != null && (
                 <ScoreCard
-                  score={Number(analysisResult.score)}
+                  score={analysisResult.score}
                   nivel={analysisResult.nivel_classificado}
                   justificativa={analysisResult.justificativa_score}
                 />

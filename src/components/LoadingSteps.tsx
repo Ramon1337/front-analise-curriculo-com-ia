@@ -25,7 +25,7 @@ export default function LoadingSteps() {
       <ul className="loading-steps__list">
         {STEPS.map((step, i) => (
           <li
-            key={i}
+            key={step.label}
             className={`loading-steps__item ${
               i < current
                 ? 'loading-steps__item--done'

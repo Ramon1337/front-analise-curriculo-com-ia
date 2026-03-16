@@ -62,9 +62,13 @@ function unwrap(raw: unknown): Record<string, unknown> {
 function normalizeResult(raw: unknown): AnalysisResult {
 
   const data = unwrap(raw);
+  const numericScore = data.score != null ? Number(data.score) : null;
 
   return {
-    score: data.score != null ? Number(data.score) : null,
+    score:
+      numericScore != null && Number.isFinite(numericScore)
+        ? numericScore
+        : null,
     justificativa_score: String(data.justificativa_score ?? ''),
     nivel_classificado: String(data.nivel_classificado ?? ''),
     pontos_fortes: toStringArray(data.pontos_fortes),
@@ -105,6 +109,14 @@ export async function sendResume(
       throw new APIError(
         `O servidor não respondeu dentro de ${API_TIMEOUT / 1000}s. Tente novamente mais tarde.`,
       );
+    }
+    if (err instanceof TypeError) {
+      throw new APIError(
+        'Falha de conexão com o servidor. Verifique sua internet e tente novamente.',
+      );
+    }
+    if (err instanceof Error) {
+      throw new APIError(`Erro ao enviar arquivo: ${err.message}`);
     }
     throw new APIError(
       'Não foi possível conectar ao servidor. Verifique se o backend está rodando.',

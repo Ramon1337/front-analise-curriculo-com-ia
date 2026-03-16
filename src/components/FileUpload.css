@@ -37,6 +37,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 0.75rem;
 }
 
@@ -63,4 +64,28 @@
 
 .file-upload__remove:hover {
   background: rgba(255, 107, 107, 0.15);
+}
+
+.file-upload__icon--docx-disabled,
+.file-upload__name--docx-disabled {
+  color: #8b949e;
+  opacity: 0.65;
+}
+
+.file-upload__docx-disclaimer {
+  flex-basis: 100%;
+  margin-top: 0.25rem;
+  padding: 0.55rem 0.7rem;
+  border-left: 3px solid #8b949e;
+  border-radius: 6px;
+  background: rgba(139, 148, 158, 0.12);
+  color: #9da7b2;
+  font-size: 0.83rem;
+  text-align: left;
+}
+
+.file-upload__error {
+  margin-top: 0.85rem;
+  color: #ff7b72;
+  font-size: 0.88rem;
 }
