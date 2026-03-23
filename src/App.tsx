@@ -1,5 +1,5 @@
 import { useState, lazy, Suspense } from 'react';
-import Header from './components/Header';
+import Hero from './components/Hero';
 import FileUpload from './components/FileUpload';
 import ModeSelector, { type Mode } from './components/ModeSelector';
 import Footer from './components/Footer';
@@ -99,8 +99,10 @@ export default function App() {
 
   return (
     <div className="app">
+      <div style={{ width: '100%', maxWidth: '1024px', margin: '0 auto' }}>
+        <Hero />
+      </div>
       <div className="app__container">
-        <Header />
         <FileUpload file={file} onFileChange={setFile} />
         <ModeSelector mode={mode} onModeChange={handleModeChange} />
 

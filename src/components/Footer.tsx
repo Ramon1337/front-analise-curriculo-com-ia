@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer__divider" />
       <p className="footer__text">
-        Currículo AI · por Ramon Godinho ·{' '}
+        Currículo.AI · por Ramon Godinho ·{' '}
         <a
           href="https://www.portfolioramondev.com.br"
           target="_blank"
