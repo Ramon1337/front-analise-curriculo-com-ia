@@ -1,29 +1,12 @@
 import './Hero.css';
 import CardSwap, { Card } from './CardSwap';
-import Shuffle from './Shuffle';
 import RotatingText from './RotatingText';
 
 export default function Hero() {
   return (
     <section className="hero">
       <div className="hero__content">
-        <Shuffle
-          text="Currículo.AI"
-          shuffleDirection="right"
-          duration={0.35}
-          animationMode="evenodd"
-          shuffleTimes={1}
-          ease="power3.out"
-          stagger={0.03}
-          threshold={0.1}
-          triggerOnce={true}
-          triggerOnHover={true}
-          respectReducedMotion={true}
-          loop={false}
-          loopDelay={0}
-          tag="h1"
-          className="hero__title"
-        />
+        <h1 className="hero__title">Currículo.AI</h1>
         <div className="hero__subtitle">
           <span style={{ whiteSpace: 'nowrap' }}>análise direta,</span>
           <RotatingText
