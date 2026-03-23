@@ -1,4 +1,5 @@
 import { useRef, type DragEvent, useState } from 'react';
+import { FolderOpen, Paperclip, X } from 'lucide-react';
 import './FileUpload.css';
 
 interface Props {
@@ -73,7 +74,7 @@ export default function FileUpload({ file, onFileChange }: Props) {
               isDocxSelected ? 'file-upload__icon--docx-disabled' : ''
             }`}
           >
-            📎
+            <Paperclip size={24} />
           </span>
           <span
             className={`file-upload__name ${
@@ -92,7 +93,7 @@ export default function FileUpload({ file, onFileChange }: Props) {
               if (inputRef.current) inputRef.current.value = '';
             }}
           >
-            ✕
+            <X size={16} />
           </button>
 
           {isDocxSelected && (
@@ -104,7 +105,14 @@ export default function FileUpload({ file, onFileChange }: Props) {
         </div>
       ) : (
         <div className="file-upload__placeholder">
-          <span className="file-upload__icon">📁</span>
+          <span className="file-upload__icon">
+            <FolderOpen
+              size={48}
+              strokeWidth={1.5}
+              color="#fbbf24"
+              style={{ marginBottom: '8px' }}
+            />
+          </span>
           <p>Arraste seu currículo aqui ou clique para selecionar</p>
           <small>Formatos aceitos: PDF, DOCX, TXT</small>
         </div>

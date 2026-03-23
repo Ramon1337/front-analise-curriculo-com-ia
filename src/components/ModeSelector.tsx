@@ -1,3 +1,4 @@
+import { Search, PenLine } from 'lucide-react';
 import './ModeSelector.css';
 
 export type Mode = 'analysis' | 'adjust';
@@ -22,7 +23,9 @@ export default function ModeSelector({ mode, onModeChange }: Props) {
             checked={mode === 'analysis'}
             onChange={() => onModeChange('analysis')}
           />
-          <span>🔍 Apenas análise</span>
+          <span>
+            <Search size={18} color="#60a5fa" /> Apenas análise
+          </span>
         </label>
         <label
           className={`mode-option ${mode === 'adjust' ? 'mode-option--active' : ''}`}
@@ -34,7 +37,9 @@ export default function ModeSelector({ mode, onModeChange }: Props) {
             checked={mode === 'adjust'}
             onChange={() => onModeChange('adjust')}
           />
-          <span>✏️ Analisar e ajustar</span>
+          <span>
+            <PenLine size={18} color="#f87171" /> Analisar e ajustar
+          </span>
         </label>
       </div>
     </div>

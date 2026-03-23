@@ -1,4 +1,11 @@
 import { useState, lazy, Suspense } from 'react';
+import {
+  Rocket,
+  Loader2,
+  AlertTriangle,
+  CheckCircle2,
+  Download,
+} from 'lucide-react';
 import Hero from './components/Hero';
 import FileUpload from './components/FileUpload';
 import ModeSelector, { type Mode } from './components/ModeSelector';
@@ -112,7 +119,15 @@ export default function App() {
           disabled={!file || loading || isDocxSelected}
           onClick={handleProcess}
         >
-          {loading ? '⏳ Processando…' : '🚀 Processar'}
+          {loading ? (
+            <>
+              <Loader2 className="animate-spin" size={20} /> Processando…
+            </>
+          ) : (
+            <>
+              <Rocket size={20} /> Processar
+            </>
+          )}
         </button>
 
         {isDocxSelected && (
@@ -123,11 +138,17 @@ export default function App() {
 
         {loading && <LoadingSteps />}
 
-        {error && <div className="alert alert--error">⚠️ {error}</div>}
+        {error && (
+          <div className="alert alert--error">
+            <AlertTriangle size={20} /> {error}
+          </div>
+        )}
 
         {analysisResult && (
           <div className="results">
-            <div className="alert alert--success">✅ Análise concluída!</div>
+            <div className="alert alert--success">
+              <CheckCircle2 size={20} /> Análise concluída!
+            </div>
 
             <Suspense fallback={null}>
               {analysisResult.score != null && (
@@ -157,7 +178,7 @@ export default function App() {
                 downloadFile(blob, 'analise_curriculo.txt');
               }}
             >
-              📥 Baixar análise (.txt)
+              <Download size={20} /> Baixar análise (.txt)
             </button>
           </div>
         )}
@@ -165,14 +186,14 @@ export default function App() {
         {pdfBlob && (
           <div className="results">
             <div className="alert alert--success">
-              ✅ Currículo ajustado com sucesso!
+              <CheckCircle2 size={20} /> Currículo ajustado com sucesso!
             </div>
             <button
               type="button"
               className="btn-download"
               onClick={() => downloadFile(pdfBlob, 'curriculo_ajustado.pdf')}
             >
-              📥 Baixar currículo ajustado (PDF)
+              <Download size={20} /> Baixar currículo ajustado (PDF)
             </button>
           </div>
         )}
