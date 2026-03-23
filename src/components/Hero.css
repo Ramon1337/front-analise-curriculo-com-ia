@@ -107,23 +107,46 @@
     flex-direction: column;
     text-align: center;
     min-height: auto;
+    padding-top: 1rem;
   }
 
   .hero__content {
+    align-items: center;
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    width: 100%;
   }
 
   .hero__title {
-    font-size: 3rem;
+    font-size: clamp(2.2rem, 10vw, 3.2rem);
+    margin-left: 0;
   }
 
   .hero__subtitle {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    width: 100%;
+  }
+
+  .hero__subtitle-rotator {
+    min-width: unset;
+    width: 300px;
+    justify-items: center;
   }
 
   .hero__animation {
     width: 100%;
-    margin-top: 1rem;
+    height: 380px;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    overflow: visible; /* Garante que os cards não cortem as laterais */
+  }
+
+  .hero__animation .card-swap__container {
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
   }
 }
