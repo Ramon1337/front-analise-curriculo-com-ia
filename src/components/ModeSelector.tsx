@@ -11,7 +11,9 @@ interface Props {
 export default function ModeSelector({ mode, onModeChange }: Props) {
   return (
     <div className="mode-selector">
-      <h3 className="mode-selector__title">Modo de processamento</h3>
+      <h3 className="mode-selector__title">
+        Como deseja processar seu currículo?
+      </h3>
       <div className="mode-selector__options">
         <label
           className={`mode-option ${mode === 'analysis' ? 'mode-option--active' : ''}`}
