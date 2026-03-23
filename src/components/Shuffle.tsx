@@ -177,8 +177,11 @@ const Shuffle: React.FC<ShuffleProps> = ({
           if (!w) return;
 
           const wrap = document.createElement('span');
-          wrap.className = 'inline-block overflow-hidden text-left';
+          wrap.className = 'shuffle-wrap';
           Object.assign(wrap.style, {
+            display: 'inline-block',
+            overflow: 'hidden',
+            textAlign: 'left',
             width: w + 'px',
             height:
               shuffleDirection === 'up' || shuffleDirection === 'down'
@@ -188,33 +191,41 @@ const Shuffle: React.FC<ShuffleProps> = ({
           });
 
           const inner = document.createElement('span');
-          inner.className =
-            'inline-block will-change-transform origin-left transform-gpu ' +
-            (shuffleDirection === 'up' || shuffleDirection === 'down'
-              ? 'whitespace-normal'
-              : 'whitespace-nowrap');
+          inner.className = 'shuffle-strip';
+          Object.assign(inner.style, {
+            display: 'inline-block',
+            willChange: 'transform',
+            transformOrigin: 'left center',
+            backfaceVisibility: 'hidden',
+            whiteSpace:
+              shuffleDirection === 'up' || shuffleDirection === 'down'
+                ? 'normal'
+                : 'nowrap',
+          });
 
           parent.insertBefore(wrap, ch);
           wrap.appendChild(inner);
 
           const firstOrig = ch.cloneNode(true) as HTMLElement;
-          firstOrig.className =
-            'text-left ' +
-            (shuffleDirection === 'up' || shuffleDirection === 'down'
-              ? 'block'
-              : 'inline-block');
+          firstOrig.className = 'shuffle-char-el';
           Object.assign(firstOrig.style, {
+            textAlign: 'left',
+            display:
+              shuffleDirection === 'up' || shuffleDirection === 'down'
+                ? 'block'
+                : 'inline-block',
             width: w + 'px',
             fontFamily: computedFont,
           });
 
           ch.setAttribute('data-orig', '1');
-          ch.className =
-            'text-left ' +
-            (shuffleDirection === 'up' || shuffleDirection === 'down'
-              ? 'block'
-              : 'inline-block');
+          ch.className = 'shuffle-char-el';
           Object.assign(ch.style, {
+            textAlign: 'left',
+            display:
+              shuffleDirection === 'up' || shuffleDirection === 'down'
+                ? 'block'
+                : 'inline-block',
             width: w + 'px',
             fontFamily: computedFont,
           });
@@ -223,12 +234,13 @@ const Shuffle: React.FC<ShuffleProps> = ({
           for (let k = 0; k < rolls; k++) {
             const c = ch.cloneNode(true) as HTMLElement;
             if (scrambleCharset) c.textContent = rand(scrambleCharset);
-            c.className =
-              'text-left ' +
-              (shuffleDirection === 'up' || shuffleDirection === 'down'
-                ? 'block'
-                : 'inline-block');
+            c.className = 'shuffle-char-el';
             Object.assign(c.style, {
+              textAlign: 'left',
+              display:
+                shuffleDirection === 'up' || shuffleDirection === 'down'
+                  ? 'block'
+                  : 'inline-block',
               width: w + 'px',
               fontFamily: computedFont,
             });
@@ -464,8 +476,6 @@ const Shuffle: React.FC<ShuffleProps> = ({
     },
   );
 
-  const baseTw =
-    'inline-block whitespace-normal break-words will-change-transform';
   const userHasFont = useMemo(
     () => className && /font[-[]/i.test(className),
     [className],
@@ -478,17 +488,19 @@ const Shuffle: React.FC<ShuffleProps> = ({
 
   const commonStyle = useMemo(
     () => ({
+      display: 'inline-block',
+      whiteSpace: 'normal',
+      wordBreak: 'break-word' as const,
+      willChange: 'transform',
+      visibility: ready ? 'visible' : 'hidden',
       textAlign,
       ...fallbackFont,
       ...style,
     }),
-    [textAlign, fallbackFont, style],
+    [ready, textAlign, fallbackFont, style],
   );
 
-  const classes = useMemo(
-    () => `${baseTw} ${ready ? 'visible' : 'invisible'} ${className}`.trim(),
-    [baseTw, ready, className],
-  );
+  const classes = useMemo(() => `${className}`.trim(), [className]);
   const Tag = (tag || 'p') as keyof JSX.IntrinsicElements;
 
   return React.createElement(
