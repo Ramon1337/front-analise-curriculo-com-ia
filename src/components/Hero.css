@@ -15,6 +15,9 @@
   flex: 1;
   z-index: 10;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .hero__title {
@@ -23,12 +26,47 @@
   margin-bottom: 0.5rem;
   letter-spacing: -0.05em;
   color: #fff;
+  margin-left: -5px; /* Compensa o espaço flexnatural da fonte se houver padding invisível */
 }
 
 .hero__subtitle {
   font-size: 1.5rem;
   color: #888;
   margin: 0;
+  display: flex !important;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.hero__subtitle-rotator {
+  color: #5b6eae;
+  display: inline-grid !important;
+  align-items: center;
+  justify-items: start;
+  min-width: 380px;
+  height: 2.8rem;
+}
+
+/* Esconde visualmente o texto para leitores de tela para evitar duplicação */
+.hero__subtitle-rotator .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.hero__subtitle-rotator > span:not(.sr-only) {
+  grid-area: 1 / 1;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  white-space: pre !important;
 }
 
 .hero__animation {
