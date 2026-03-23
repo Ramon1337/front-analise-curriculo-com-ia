@@ -99,9 +99,6 @@ export default function App() {
 
   function handleModeChange(nextMode: Mode) {
     setMode(nextMode);
-    setError(null);
-    setAnalysisResult(null);
-    setPdfBlob(null);
   }
 
   return (
